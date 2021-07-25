@@ -1,44 +1,133 @@
-import React from "react";
+import React from 'react';
+import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import {
-    View,
-    Image,
-    TouchableOpacity,
-    Text,
-    StyleSheet
-} from "react-native";
-import { createBottomTabNavigator, BottomTabBar } from "@react-navigation/bottom-tabs"
+    createBottomTabNavigator,
+    BottomTabBar,
+} from '@react-navigation/bottom-tabs';
+import LinearGradient from 'react-native-linear-gradient';
 
-import { Home } from "../screens"
-import { COLORS, FONTS, icons } from "../constants"
+import { Home } from '../screens';
+import { COLORS, FONTS, icons } from '../constants';
+import TabBarIcon from './TabBarIcon';
 
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator();
+
+const TabBarCustomButton = ({ children, onPress }) => {
+    console.log(children);
+    return (
+        <TouchableOpacity
+            style={{
+                top: -30,
+                justifyContent: 'center',
+                alignItems: 'center',
+                ...styles.shadow,
+            }}
+            onPress={onPress}
+        >
+            <LinearGradient
+                colors={[COLORS.primary, COLORS.secondary]}
+                style={{
+                    width: 70,
+                    height: 70,
+                    borderRadius: 35,
+                }}
+            >
+                {children}
+            </LinearGradient>
+        </TouchableOpacity>
+    );
+};
 
 const Tabs = () => {
     return (
-        <Tab.Navigator>
+        <Tab.Navigator
+            tabBarOptions={{
+                showLabel: false,
+                style: {
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    elevation: 0,
+                    backgroundColor: COLORS.white,
+                    borderTopColor: 'transparent',
+                    height: 100,
+                },
+            }}
+        >
             <Tab.Screen
-                name="Home"
+                name='Home'
                 component={Home}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <TabBarIcon
+                            label='Home'
+                            icon={icons.home}
+                            focused={focused}
+                        />
+                    ),
+                }}
             />
             <Tab.Screen
-                name="Portfolio"
+                name='Portfolio'
                 component={Home}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <TabBarIcon
+                            label='Portfolio'
+                            icon={icons.pie_chart}
+                            focused={focused}
+                        />
+                    ),
+                }}
             />
             <Tab.Screen
-                name="Transaction"
+                name='Transaction'
                 component={Home}
+                options={{
+                    tabBarIcon: () => {
+                        <Image
+                            source={icons.transaction}
+                            resizeMode='contain'
+                            style={{
+                                width: 30,
+                                height: 30,
+                                tintColor: COLORS.white,
+                            }}
+                        />;
+                    },
+                    tabBarButton: (props) => <TabBarCustomButton {...props} />,
+                }}
             />
             <Tab.Screen
-                name="Prices"
+                name='Prices'
                 component={Home}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <TabBarIcon
+                            label='Prices'
+                            icon={icons.line_graph}
+                            focused={focused}
+                        />
+                    ),
+                }}
             />
             <Tab.Screen
-                name="Settings"
+                name='Settings'
                 component={Home}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <TabBarIcon
+                            label='Settings'
+                            icon={icons.settings}
+                            focused={focused}
+                        />
+                    ),
+                }}
             />
         </Tab.Navigator>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     shadow: {
@@ -50,8 +139,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
 
-        elevation: 5
-    }
-})
+        elevation: 5,
+    },
+});
 
 export default Tabs;
