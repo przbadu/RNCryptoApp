@@ -1,19 +1,14 @@
 import React from 'react';
 import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import {
-    createBottomTabNavigator,
-    BottomTabBar,
-} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { Home } from '../screens';
 import { COLORS, FONTS, icons } from '../constants';
-import TabBarIcon from './TabBarIcon';
 
 const Tab = createBottomTabNavigator();
 
-const TabBarCustomButton = ({ children, onPress }) => {
-    console.log(children);
+function TabBarCustomButton({ children, onPress }) {
     return (
         <TouchableOpacity
             style={{
@@ -36,7 +31,32 @@ const TabBarCustomButton = ({ children, onPress }) => {
             </LinearGradient>
         </TouchableOpacity>
     );
-};
+}
+
+function TabBarIcon({ icon, label, focused }) {
+    return (
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Image
+                source={icon}
+                resizeMode='contain'
+                style={{
+                    width: 30,
+                    height: 30,
+                    tintColor: focused ? COLORS.primary : COLORS.black,
+                }}
+            />
+            <Text
+                style={{
+                    color: focused ? COLORS.primary : COLORS.black,
+                    ...FONTS.body5,
+                    textTransform: 'uppercase',
+                }}
+            >
+                {label}
+            </Text>
+        </View>
+    );
+}
 
 const Tabs = () => {
     return (
@@ -86,15 +106,17 @@ const Tabs = () => {
                 component={Home}
                 options={{
                     tabBarIcon: () => {
-                        <Image
-                            source={icons.transaction}
-                            resizeMode='contain'
-                            style={{
-                                width: 30,
-                                height: 30,
-                                tintColor: COLORS.white,
-                            }}
-                        />;
+                        return (
+                            <Image
+                                source={icons.transaction}
+                                resizeMode='contain'
+                                style={{
+                                    width: 30,
+                                    height: 30,
+                                    tintColor: COLORS.white,
+                                }}
+                            />
+                        );
                     },
                     tabBarButton: (props) => <TabBarCustomButton {...props} />,
                 }}
